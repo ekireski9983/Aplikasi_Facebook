@@ -11,10 +11,14 @@ import {
   RegisterInputGenderScreen,
   RegisterInputPasswordScreen
 } from "./screen"
+import store from './store'
+import { Provider } from 'react-redux'
+
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
+    <Provider store={store}>
     <NavigationContainer independent={true}>
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen name="Home" component={HomeScreen} />
@@ -32,6 +36,7 @@ function App() {
         <Stack.Screen name="RegisterPassword" component={RegisterInputPasswordScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 
