@@ -46,7 +46,7 @@ export default function RegisterInputPasswordScreen({navigation}){
                     style: 'cancel',
                 },{
                     text: 'Submit', onPress: async () => {
-                       const res =  await ApiLib.post('/action/insertOne',
+                       const res =  await ApiLib.post('/action/findOne',
                             {
                                 "dataSource": "Cluster0",
                                 "database": "app-lp3i-mobile",
@@ -58,6 +58,8 @@ export default function RegisterInputPasswordScreen({navigation}){
                         if(res.data?.insertedId){
                             dispatch(resetRegisterData())
                             navigation.navigate("Login")
+                        }else{
+                            
                         }
                         
                     }
