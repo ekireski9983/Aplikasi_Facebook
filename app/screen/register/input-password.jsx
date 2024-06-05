@@ -33,6 +33,22 @@ export default function RegisterInputPasswordScreen({navigation}){
                 throw Error(`Confirm password doesn't match`)
             }
 
+            let message  = `Name : ${register.firstName}  ${register.sureName}\n`
+                message += `Email : ${register.email} \n`
+                message += `Gender : ${register.gender} \n`
+                message += `Birth Date : ${register.birthDate} \n`
+
+            Alert.alert('Confirm', message, [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },{
+                    text: 'Submit', onPress: () => {
+                        console.log('ERR')
+                    }
+                },
+            ]);
             //navigation.navigate("RegisterDate")
         }catch(err){
             Alert.alert('Error', err.message, [
