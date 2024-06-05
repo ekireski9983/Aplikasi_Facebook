@@ -11,7 +11,8 @@ import {
     FbButton
 } from '../../components'
 import { useSelector, useDispatch } from 'react-redux'
-import { setPassword } from '../../store/reducer/registerReducer'
+import { setPassword, resetRegisterData } from '../../store/reducer/registerReducer'
+import ApiLib from "../../lib/ApiLib"
 
 export default function RegisterInputPasswordScreen({navigation}){
     const [confirmPassword, setConfirmPassword] = useState(null)
@@ -32,7 +33,7 @@ export default function RegisterInputPasswordScreen({navigation}){
             if( confirmPassword !== register.password){
                 throw Error(`Confirm password doesn't match`)
             }
-
+            
             let message  = `Name : ${register.firstName}  ${register.sureName}\n`
                 message += `Email : ${register.email} \n`
                 message += `Gender : ${register.gender} \n`
@@ -44,12 +45,25 @@ export default function RegisterInputPasswordScreen({navigation}){
                     onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel',
                 },{
-                    text: 'Submit', onPress: () => {
-                        console.log('ERR')
+                    text: 'Submit', onPress: async () => {
+                       const res =  await ApiLib.post('/action/insertOne',
+                            {
+                                "dataSource": "Cluster0",
+                                "database": "app-lp3i-mobile",
+                                "collection": "users",
+                                "document": register
+                            }
+                        )
+
+                        if(res.data?.insertedId){
+                            dispatch(resetRegisterData())
+                            navigation.navigate("Login")
+                        }
+                        
                     }
                 },
             ]);
-            //navigation.navigate("RegisterDate")
+            
         }catch(err){
             Alert.alert('Error', err.message, [
               {text: 'OK', onPress: () => {
@@ -78,7 +92,7 @@ export default function RegisterInputPasswordScreen({navigation}){
                     label="Confirm Password"/>
             </View>
 
-            <FbButton title="Next" onPress={onNextInput}/>
+            <FbButton title="Preview data" onPress={onNextInput}/>
             
         </ScrollView>
     )
